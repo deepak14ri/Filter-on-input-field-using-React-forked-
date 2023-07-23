@@ -12,13 +12,12 @@ const FilteredData = () => {
   const [filteredData, setFilteredData] = useState(data);
 
   const handleSearch = (e) => {
-    setSearchTerm(e.target.value.toLowerCase());
-
+    setSearchTerm(e.target.value);
     const filteredResults = data.filter((item) => {
-      const filterByName = item.name.toLocaleUpperCase();
+      const filterByName = item.name.toLowerCase();
       const filterByAge = item.age.toString();
       return (
-        filterByName.includes(e.target.value.toLocaleUpperCase()) ||
+        filterByName.includes(e.target.value.toLowerCase()) ||
         filterByAge.includes(e.target.value)
       );
     });
