@@ -1,55 +1,76 @@
-import './style.css';
-import React, { useState } from 'react';
-
-const data = [
-  { id: 1, name: 'Deepak Chaudhari', age: 28 },
-  { id: 2, name: 'Vivek Gupta', age: 26 },
-  { id: 3, name: 'Aarti Kumawat', age: 34 },
-];
+import React, { useEffect, useState } from "react";
 
 const FilteredData = () => {
-  const [searchTerm, setSearchTerm] = useState('');
-  const [filteredData, setFilteredData] = useState(data);
+  const [data, setData] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [filteredField, setFilteredField] = useState([]);
+
+  useEffect(() => {
+    fetchData("https://jsonplaceholder.typicode.com/users")
+      .then((data) => {
+        setData(data);
+        setFilteredField(data);
+      })
+      .catch((error) => {
+        console.log("Data fetching error:", error);
+      });
+  }, []);
+
+  const fetchData = (url) => {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        fetch(url)
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+            return response.json();
+          })
+          .then((data) => resolve(data))
+          .catch((error) => reject(error));
+      }, 2000);
+    });
+  };
 
   const handleSearch = (e) => {
-    setSearchTerm(e.target.value);
-    const filteredResults = data.filter((item) => {
+    setSearchTerm(e.target.value.toLowerCase());
+    const filterResults = data.filter((item) => {
       const filterByName = item.name.toLowerCase();
-      const filterByAge = item.age.toString();
+      const filterByEmail = item.email.toLowerCase().toString();
       return (
         filterByName.includes(e.target.value.toLowerCase()) ||
-        filterByAge.includes(e.target.value)
+        filterByEmail.includes(e.target.value.toLowerCase())
       );
     });
-    setFilteredData(filteredResults);
+    setFilteredField(filterResults);
   };
+
   return (
     <div>
       <input
         type="text"
         value={searchTerm}
-        placeholder="Search by name here..."
-        onChange={handleSearch}
+        placeholder="Search here.."
         style={{
-          border: '1px solid #ccc',
-          padding: '5px',
-          marginBottom: '5px',
+          border: "1px solid #ccc",
+          padding: "5px",
+          marginBottom: "10px"
         }}
+        onChange={handleSearch}
       />
-      {filteredData.map((item) => (
+      {filteredField.map((item) => (
         <div
           key={item.id}
           style={{
-            border: '1px solid #ccc',
-            padding: '5px',
-            marginBottom: '5px',
+            border: "1px solid #ccc",
+            padding: "5px",
+            marginBottom: "10px"
           }}
         >
           <p>Name: {item.name}</p>
-          <p>Age: {item.age}</p>
+          <p>Email: {item.email}</p> {/* Display Email instead of Age */}
         </div>
       ))}
-      <button className="hide-none">Hide Button</button>
     </div>
   );
 };
