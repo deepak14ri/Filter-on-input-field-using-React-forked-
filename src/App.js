@@ -68,7 +68,7 @@ const FilteredData = () => {
           }}
         >
           <p>Name: {item.name}</p>
-          <p>Email: {item.email}</p> {/* Display Email instead of Age */}
+          <p>Email: {item.email}</p> 
         </div>
       ))}
     </div>
