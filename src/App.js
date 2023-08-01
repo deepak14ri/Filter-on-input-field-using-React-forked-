@@ -62,7 +62,6 @@ const FilteredData = () => {
         <div
           key={item.id}
           style={{
-            margin: '0',
             border: '1px solid #ccc',
             padding: '5px',
             marginBottom: '10px',
