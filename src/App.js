@@ -1,18 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 
 const FilteredData = () => {
   const [data, setData] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const [filteredField, setFilteredField] = useState([]);
 
   useEffect(() => {
-    fetchData("https://jsonplaceholder.typicode.com/users")
+    fetchData('https://jsonplaceholder.typicode.com/users')
       .then((data) => {
         setData(data);
         setFilteredField(data);
       })
       .catch((error) => {
-        console.log("Data fetching error:", error);
+        console.log('Data fetching error:', error);
       });
   }, []);
 
@@ -22,7 +22,7 @@ const FilteredData = () => {
         fetch(url)
           .then((response) => {
             if (!response.ok) {
-              throw new Error("Network response was not ok");
+              throw new Error('Network response was not ok');
             }
             return response.json();
           })
@@ -52,9 +52,9 @@ const FilteredData = () => {
         value={searchTerm}
         placeholder="Search here.."
         style={{
-          border: "1px solid #ccc",
-          padding: "5px",
-          marginBottom: "10px"
+          border: '1px solid #ccc',
+          padding: '5px',
+          marginBottom: '10px',
         }}
         onChange={handleSearch}
       />
@@ -62,13 +62,14 @@ const FilteredData = () => {
         <div
           key={item.id}
           style={{
-            border: "1px solid #ccc",
-            padding: "5px",
-            marginBottom: "10px"
+            margin: '0',
+            border: '1px solid #ccc',
+            padding: '5px',
+            marginBottom: '10px',
           }}
         >
           <p>Name: {item.name}</p>
-          <p>Email: {item.email}</p> 
+          <p>Email: {item.email}</p>
         </div>
       ))}
     </div>
