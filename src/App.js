@@ -1,48 +1,40 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const FilteredData = () => {
   const [data, setData] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [filteredField, setFilteredField] = useState([]);
+  const [filteredItem, setFilteredItem] = useState([]);
 
   useEffect(() => {
-    fetchData('https://jsonplaceholder.typicode.com/users')
-      .then((data) => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          'https://jsonplaceholder.typicode.com/users'
+        );
+        if (!response.ok) {
+          throw new Error('fetching data error.');
+        }
+        const data = await response.json();
         setData(data);
-        setFilteredField(data);
-      })
-      .catch((error) => {
-        console.log('Data fetching error:', error);
-      });
+        setFilteredItem(data);
+      } catch (error) {
+        console.log('Fetching data error', message.error);
+      }
+    };
+    fetchData();
   }, []);
-
-  const fetchData = (url) => {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        fetch(url)
-          .then((response) => {
-            if (!response.ok) {
-              throw new Error('Network response was not ok');
-            }
-            return response.json();
-          })
-          .then((data) => resolve(data))
-          .catch((error) => reject(error));
-      }, 2000);
-    });
-  };
 
   const handleSearch = (e) => {
     setSearchTerm(e.target.value.toLowerCase());
-    const filterResults = data.filter((item) => {
+    const filteredResults = data.filter((item) => {
       const filterByName = item.name.toLowerCase();
       const filterByEmail = item.email.toLowerCase().toString();
       return (
-        filterByName.includes(e.target.value.toLowerCase()) ||
-        filterByEmail.includes(e.target.value.toLowerCase())
+        filterByName.includes(e.target.value) ||
+        filterByEmail.includes(e.target.value)
       );
     });
-    setFilteredField(filterResults);
+    setFilteredItem(filteredResults);
   };
 
   return (
@@ -50,20 +42,22 @@ const FilteredData = () => {
       <input
         type="text"
         value={searchTerm}
-        placeholder="Search here.."
+        placeholder="search here..."
+        onChange={handleSearch}
         style={{
+          margin: '0',
           border: '1px solid #ccc',
-          padding: '5px',
+          padding: '10px',
           marginBottom: '10px',
         }}
-        onChange={handleSearch}
       />
-      {filteredField.map((item) => (
+      {filteredItem.map((item) => (
         <div
-          key={item.id}
+          value={item.id}
           style={{
+            margin: '0',
             border: '1px solid #ccc',
-            padding: '5px',
+            padding: '10px',
             marginBottom: '10px',
           }}
         >
@@ -76,3 +70,4 @@ const FilteredData = () => {
 };
 
 export default FilteredData;
+// module.exports = FilteredData;
