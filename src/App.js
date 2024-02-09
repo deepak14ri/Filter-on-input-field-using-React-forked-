@@ -70,4 +70,3 @@ const FilteredData = () => {
 };
 
 export default FilteredData;
-// module.exports = FilteredData;
